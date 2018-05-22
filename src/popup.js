@@ -16,14 +16,21 @@ const JOUYOU_KANJI = new Set(['亜','哀','挨','愛','曖','悪','握','圧','�
 const isJouyou = character => JOUYOU_KANJI.has(character);
 
 const onReceivedHandler = pageDetails => {
-  // Unspread pageDetails
   const { highlightedText } = pageDetails; 
   const jouyouKanjiOnlyText = highlightedText.split('').filter(isJouyou);
   const container = document.getElementById('is-it-jk');
+  if (jouyouKanjiOnlyText.length === 0) {
+    container.appendChild(createRows('何もあります'));
+    return;
+  }
 
   jouyouKanjiOnlyText.forEach(character => {
-    let jouyouDOM = document.createElement('span');
-    jouyouDOM.innerHTML = character;
-    container.appendChild(jouyouDOM);
+    container.appendChild(createRows(character));
   });
+}
+
+const createRows = content => {
+  let domObject = document.createElement('span');
+  domObject.innerHTML = content;
+  return domObject;
 }
